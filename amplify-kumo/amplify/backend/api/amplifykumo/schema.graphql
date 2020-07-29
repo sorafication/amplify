@@ -1,0 +1,19 @@
+type Todo @model {
+  id: ID!
+  name: String!
+  description: String
+  author: String
+}
+
+type Accounts @model {
+  id: ID!
+  accountid: Int
+  name: String!
+}
+
+type Comments @model {
+  id: ID!
+  author: String!
+  description: String
+  priority: Int
+}
