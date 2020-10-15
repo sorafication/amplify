@@ -13,48 +13,50 @@ const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 const sts = new AWS.STS();
 
 
-// DynamoDB Function
-   async function getAllDynamoDBItems(){
-    let params = {
-      TableName: 'Comments-ifdtxan4k5fglip5ynnopk6bky-dev',
-   //   Key: {'id': '4de8a026-4599-465a-ac76-9259b4adf1fc'}
-     };
+// Create Hash of String for Primary Key
+const crypto = require('crypto')
+
+
+// DynamoDB Helper Function. Currently not used.
+async function getAllDynamoDBItems(){
+  let params = {
+    TableName: 'Comments-ifdtxan4k5fglip5ynnopk6bky-dev',
+   };
 
        console.log("Starting Function")
-    try {
-        var result = await docClient.scan(params).promise()
-        console.log(JSON.stringify(result))
-        console.log("Success")
-    } catch (error) {
-        console.log("FAILED")
-        console.error(error);
-    }
+  try {
+     var result = await docClient.scan(params).promise()
+     console.log(JSON.stringify(result))
+     console.log("Success")
+  } catch (error) {
+     console.log("FAILED")
+     console.error(error);
+  }
 }
 
-// DynamoDB Function
- const writeAllDynamoDBItems = async (num,id,name,email,status) => {
+// DynamoDB Function to write all collected Data
+ const writeAllDynamoDBItems = async (id,num,accountid,name,email,status) => {
 
 
   let params = {
-    TableName: 'Accounts-ifdtxan4k5fglip5ynnopk6bky-dev',
+    TableName: 'Account-ifdtxan4k5fglip5ynnopk6bky-dev',
     Item:{
+      "id":id,
       "num":num,
-      "id": id,
+      "accountid": accountid,
       "name": name,
       "email": email,
       "status": status
   }
-    //Key: {'id': '4de8a026-4599-465a-ac76-9259b4adf1fc'}
    };
 
      console.log("Writing Account " + name)
   try {
-      var result = await docClient.put(params).promise()
-      console.log(JSON.stringify(result))
-      console.log("Success")
+    var result = await docClient.put(params).promise()
+    console.log("Success")
   } catch (error) {
-      console.log("FAILED")
-      console.error(error);
+    console.log("Failed Writing Files:")
+    console.error(error);
   }
 }
 
@@ -70,7 +72,6 @@ const getCrossAccountCredentials = () => {
     const timestamp = (new Date()).getTime();
     const params = {
       RoleArn: 'arn:aws:iam::298094174079:role/amplify-kumo-access-role',
-      // RoleArn: 'arn:aws:iam::163962199350:role/WildRydesLambda',
       RoleSessionName: `New-Session-${timestamp}`
     };
     sts.assumeRole(params, (err, data) => {
@@ -85,13 +86,13 @@ const getCrossAccountCredentials = () => {
     });
   });
 }
-
+// j helps to count all accounts
 var j = 0;
 var all_accounts = []
+
 // Organizations Function --> List all Accounts
 var data_all;
 const listAllAccounts =  (identity,params) => {
-  //const listResult = identity.listAccounts(params).promise();
   return new Promise((resolve, reject) => {
 
     identity.listAccounts(params, (err, data) => {
@@ -101,22 +102,19 @@ const listAllAccounts =  (identity,params) => {
      if (err) reject(err); // an error occurred
       else {
         console.log("Saved all Accounts");
- // console.log(params.NextToken)
-
-
 
             for (var i=0, max=data.Accounts.length; i < max; i++) {
                 //console.log("Count: " + j + " ID:" + data.Accounts[i].Id +" is: " +  data.Accounts[i].Name)
                 j += 1;
                 //all_accounts.push(data.Accounts[i].Name);
+                let str1 = data.Accounts[i].Name;
+                let str2 = data.Accounts[i].Id;
+                let str3 = str1.concat(str2)
 
-                all_accounts.push({num : j, name:data.Accounts[i].Name, id:data.Accounts[i].Id ,email:data.Accounts[i].Email ,status:data.Accounts[i].Status});
-                //myObj.accounts[1].name = data.Accounts[i].Name
+                let hash = crypto.createHash('md5').update(str3).digest("hex")
+
+                all_accounts.push({id:hash, num:j, accountid:data.Accounts[i].Id, name:data.Accounts[i].Name ,email:data.Accounts[i].Email ,status:data.Accounts[i].Status});
         }
-
-        //data_all.push(data);
-
-        //console.log(data_all)
 
            if (data.NextToken != undefined) {
                console.log("There is more")
@@ -130,12 +128,8 @@ const listAllAccounts =  (identity,params) => {
           //console.log(all_accounts)
           resolve (all_accounts);
       }
-        //resolve('All Accounts listed. Finish');
 
-           // console.log(data.NextToken)
-           // console.log(data.Accounts[1].Id)
-
-          }    // successful response
+   }    // successful response
 })
 });
 } ;
@@ -156,23 +150,16 @@ try {
 
   //Check own and assumed Identity
 
-  //const msg_caller = await getCallerIdentity(sts)
-  //console.log("Username Current Identity: " + msg_caller.Arn)
-  //const msg_caller_org = await getCallerIdentity(cbc_master_sts)
-  //console.log("Username Assumed Identity: " + msg_caller_org.Arn)
+  const msg_caller = await getCallerIdentity(sts)
+  console.log("Username Current Identity: " + msg_caller.Arn)
+  const msg_caller_org = await getCallerIdentity(cbc_master_sts)
+  console.log("Username Assumed Identity: " + msg_caller_org.Arn)
 
 
   const all_acc = await listAllAccounts(cbc_master_orgs)
-  //console.log(all_acc);
-   // all_acc.forEach(element=> {
-    //console.log("Writing Account " + element.name)
-    //writeAllDynamoDBItems(element.id,element.name,element.email,element.status)
-  //});
-  //await writeAllDynamoDBItems(all_acc)
   const start = async () => {
     for (let element of all_acc) {
-      await writeAllDynamoDBItems(element.num,element.id,element.name,element.email,element.status) ;
-      //console.log("BLA")
+      await writeAllDynamoDBItems(element.id,element.num,element.accountid,element.name,element.email,element.status) ;
       //console.log(element);
     }
     console.log('Done');
@@ -188,11 +175,9 @@ catch(err){
   console.log("Error while Assuming Role from another Account. Message:  " + err)
 }
 
-    // TODO implement
     const response = {
         statusCode: 200,
         body: JSON.stringify('Hello from Lambda!'),
     };
-    //return s3.listBuckets().promise();
     return response
 };

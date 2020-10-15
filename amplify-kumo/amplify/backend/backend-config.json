@@ -7,10 +7,9 @@
                 "authConfig": {
                     "additionalAuthenticationProviders": [],
                     "defaultAuthentication": {
-                        "authenticationType": "API_KEY",
-                        "apiKeyConfig": {
-                            "description": "keybeforecognito",
-                            "apiKeyExpirationDays": "100"
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authamplifykumob540c670"
                         }
                     }
                 }
@@ -23,6 +22,21 @@
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
             "dependsOn": []
+        }
+    },
+    "auth": {
+        "amplifykumob540c670": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    },
+    "hosting": {
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
         }
     }
 }

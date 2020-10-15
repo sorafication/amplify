@@ -32,28 +32,34 @@ export const listTodos = /* GraphQL */ `
     }
   }
 `;
-export const getAccounts = /* GraphQL */ `
-  query GetAccounts($id: ID!) {
-    getAccounts(id: $id) {
+export const getAccount = /* GraphQL */ `
+  query GetAccount($id: ID!) {
+    getAccount(id: $id) {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
   }
 `;
-export const listAccountss = /* GraphQL */ `
-  query ListAccountss(
-    $filter: ModelAccountsFilterInput
+export const listAccounts = /* GraphQL */ `
+  query ListAccounts(
+    $filter: ModelAccountFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listAccountss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listAccounts(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         accountid
         name
+        email
+        num
+        status
         createdAt
         updatedAt
       }

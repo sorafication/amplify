@@ -10,6 +10,17 @@
             "StackName": "amplify-amplifykumo-dev-125022",
             "StackId": "arn:aws:cloudformation:eu-central-1:163962199350:stack/amplify-amplifykumo-dev-125022/d7b07ed0-b2e3-11ea-8b56-062c87541f2a",
             "AmplifyAppId": "drjgagjbys8gs"
+        },
+        "categories": {
+            "auth": {
+                "amplifykumob540c670": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "drjgagjbys8gs",
+                    "type": "manual"
+                }
+            }
         }
     }
 }

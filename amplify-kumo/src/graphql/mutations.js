@@ -46,43 +46,52 @@ export const deleteTodo = /* GraphQL */ `
     }
   }
 `;
-export const createAccounts = /* GraphQL */ `
-  mutation CreateAccounts(
-    $input: CreateAccountsInput!
-    $condition: ModelAccountsConditionInput
+export const createAccount = /* GraphQL */ `
+  mutation CreateAccount(
+    $input: CreateAccountInput!
+    $condition: ModelAccountConditionInput
   ) {
-    createAccounts(input: $input, condition: $condition) {
+    createAccount(input: $input, condition: $condition) {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
   }
 `;
-export const updateAccounts = /* GraphQL */ `
-  mutation UpdateAccounts(
-    $input: UpdateAccountsInput!
-    $condition: ModelAccountsConditionInput
+export const updateAccount = /* GraphQL */ `
+  mutation UpdateAccount(
+    $input: UpdateAccountInput!
+    $condition: ModelAccountConditionInput
   ) {
-    updateAccounts(input: $input, condition: $condition) {
+    updateAccount(input: $input, condition: $condition) {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteAccounts = /* GraphQL */ `
-  mutation DeleteAccounts(
-    $input: DeleteAccountsInput!
-    $condition: ModelAccountsConditionInput
+export const deleteAccount = /* GraphQL */ `
+  mutation DeleteAccount(
+    $input: DeleteAccountInput!
+    $condition: ModelAccountConditionInput
   ) {
-    deleteAccounts(input: $input, condition: $condition) {
+    deleteAccount(input: $input, condition: $condition) {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }

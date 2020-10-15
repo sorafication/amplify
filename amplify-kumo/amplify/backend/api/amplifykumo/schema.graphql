@@ -5,10 +5,15 @@ type Todo @model {
   author: String
 }
 
-type Accounts @model {
+type Account @model {
   id: ID!
-  accountid: Int
+  accountid: String!
   name: String!
+  email: String!
+  num: Int!
+  status: String!
+
+
 }
 
 type Comments @model {

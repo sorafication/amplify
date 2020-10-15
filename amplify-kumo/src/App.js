@@ -4,6 +4,8 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { createTodo } from './graphql/mutations'
 import { listTodos } from './graphql/queries'
 
+import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
+
 const initialState = { name: '', description: '', author: "" }
 
 const App = () => {
@@ -85,4 +87,4 @@ const styles = {
 
 
 
-export default App
+export default withAuthenticator(App, true)

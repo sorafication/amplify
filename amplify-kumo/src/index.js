@@ -1,23 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import {Greeting, AWSAccountLists} from './Oki'
-import {Comments} from './Comments'
+import AWSAccountListsMaterial from './AccountListMaterial'
+import { Greeting } from './Greeting'
 import * as serviceWorker from './serviceWorker';
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
+
+
 Amplify.configure(awsExports);
 
 
 
 
+// Main Render Function
 
 ReactDOM.render(
   <React.StrictMode>
-    <Greeting name="Oki" />
-    < AWSAccountLists />
-    < Comments />
+
+
+    {/* Greeting Component with Header and additional Information */}
+    <Greeting name="Oktavius Wiesner" />
+
+    {/* Main Component with Table Data */}
+    < AWSAccountListsMaterial />
+
+
 
 
   </React.StrictMode>,

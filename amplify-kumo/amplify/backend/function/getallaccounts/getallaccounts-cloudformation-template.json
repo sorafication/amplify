@@ -68,7 +68,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-amplifykumo-dev-125022-deployment",
-					"S3Key": "amplify-builds/getallaccounts-7467636e766430327974-build.zip"
+					"S3Key": "amplify-builds/getallaccounts-6c44763631676639302f-build.zip"
 				}
 			}
 		},

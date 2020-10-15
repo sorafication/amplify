@@ -37,34 +37,43 @@ export const onDeleteTodo = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAccounts = /* GraphQL */ `
-  subscription OnCreateAccounts {
-    onCreateAccounts {
+export const onCreateAccount = /* GraphQL */ `
+  subscription OnCreateAccount {
+    onCreateAccount {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateAccounts = /* GraphQL */ `
-  subscription OnUpdateAccounts {
-    onUpdateAccounts {
+export const onUpdateAccount = /* GraphQL */ `
+  subscription OnUpdateAccount {
+    onUpdateAccount {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteAccounts = /* GraphQL */ `
-  subscription OnDeleteAccounts {
-    onDeleteAccounts {
+export const onDeleteAccount = /* GraphQL */ `
+  subscription OnDeleteAccount {
+    onDeleteAccount {
       id
       accountid
       name
+      email
+      num
+      status
       createdAt
       updatedAt
     }
